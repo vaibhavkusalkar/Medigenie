@@ -2,12 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* Remove scrollbar */
+  .remove-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb:hover {
+    /* background: #1e2238; */
+    background: transparent;
+  }
+}
+
+@layer utilities {
+
+  /* ALIGNMENTS */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+
+   /* TYPOGRAPHY */
+  .text-36-bold {
+    @apply text-[36px] leading-[40px] font-bold;
+  }
+  
+  .text-24-bold {
+    @apply text-[24px] leading-[28px] font-bold;
+  }
+  
+  .text-32-bold {
+    @apply text-[32px] leading-[36px] font-bold;
+  }
+  
+  .text-18-bold {
+    @apply text-[18px] leading-[24px] font-bold;
+  }
+  
+  .text-16-semibold {
+    @apply text-[16px] leading-[20px] font-semibold;
+  }
+  
+  .text-12-semibold {
+    @apply text-[12px] leading-[16px] font-semibold;
+  }
+  
+  .text-16-regular {
+    @apply text-[16px] leading-[20px] font-normal;
+  }
+  
+  .text-14-regular {
+    @apply text-[14px] leading-[18px] font-normal;
+  }
+  
+  .text-12-regular {
+    @apply text-[12px] leading-[16px] font-normal;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -18,10 +94,4 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
 }
