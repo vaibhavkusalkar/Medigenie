@@ -31,6 +31,7 @@ interface CustomAuthFormFieldProps {
 	options?: { name: string; iso?: string }[];
 	customOnChange?: (value: string) => void;
 	isDisabled?: boolean;
+	showForgotPassword?: boolean;
 }
 
 const CustomAuthFormField = ({
@@ -43,6 +44,7 @@ const CustomAuthFormField = ({
 	options,
 	customOnChange,
 	isDisabled,
+	showForgotPassword = false,
 }: CustomAuthFormFieldProps) => {
 	return (
 		<FormField
@@ -54,15 +56,12 @@ const CustomAuthFormField = ({
 						{name === "password" ? (
 							<>
 								<div className="flex items-center">
-									<FormLabel htmlFor={name}>
-										{label}
-									</FormLabel>
-									<Link
-										href="/forgot-password"
-										className="ml-auto inline-block text-sm underline"
-									>
-										Forgot your password?
-									</Link>
+									<FormLabel htmlFor={name}>{label}</FormLabel>
+                  {showForgotPassword && (
+                    <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
+									  	Forgot your password?
+									  </Link>
+                  )}
 								</div>
 								<FormControl>
 									<Input

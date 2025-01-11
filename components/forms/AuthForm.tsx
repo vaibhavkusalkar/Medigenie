@@ -20,7 +20,7 @@ import {
 import { authFormSchema } from '@/lib/utils';
 import CustomAuthFormField from '../custom/CustomAuthFormField';
 import { Loader2 } from 'lucide-react';
-import { State, City } from '@/lib/types';
+import { State, City, Gender } from '@/lib/types';
 
 interface AuthFormProps {
   type:'login' | 'register'
@@ -34,38 +34,72 @@ interface AuthFormProps {
 const AuthForm = ({type, states, cities, selectedState, handleStateChange, loadingCities}:AuthFormProps) => {
   const [step, setStep] = useState(1);
   const [isLoading, setisLoading] = useState(false)
+  //const [storedValues, setStoredValues] = useState({ email: '', password: '' });
   const formSchema = authFormSchema(type);
+  const gender : Gender[] = [
+    {name: "Male"},
+    {name: "Female"},
+    {name: "Other"}
+  ]
 
-  const handleNextClick = () => {
-    setStep(prevStep => prevStep + 1);
-  };
+  /* const handleNextClick = () => {
+    resolver: zodResolver(formSchema)
+    setStep(2)
+  }; */
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      chronicDiseases: "",
+      timeStamp: new Date().toISOString(),
     },
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  /* function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log("Button Clicked")
     setisLoading(true)
     console.log(values)
     setisLoading(false)
-  }
+  } */
+
+  const { register, handleSubmit, formState: { errors }, trigger } = useForm({
+    resolver: zodResolver(formSchema),
+  });
+
+  const handleNextClick = async () => {
+    const isValid = await form.trigger(['email', 'password', 'confirmPassword']);
+    if (isValid) {
+      setStep(2);
+    }
+  };
+
+  
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (type === 'register' && step === 1) {
+      // Validate Step 1 and move to Step 2
+      trigger(['email', 'password', 'confirmPassword']).then((valid) => {
+        if (valid) setStep(2);
+      });
+    } else {
+      // Final submission for Step 2
+      console.log("Form submitted", values);
+    }
+  };
+
 
 //lg:min-h-[600px] xl:min-h-[800px]
 
   return (
-    <div className="w-full h-screen flex flex-col lg:grid lg:grid-cols-2 px-6 lg:px-0">
+    <div className="w-full h-screen flex flex-col lg:grid lg:grid-cols-2 px-6 lg:px-0 overflow-hidden">
       <div className="hidden lg:flex items-center justify-center bg-gray-400">
         {/* Add any additional content for the second column here */}
       </div>
-      <div className="flex items-center justify-center py-10">
+      <div className="flex flex-col flex-1 items-center justify-center py-10">
         <div className="mx-auto grid justify-center w-full max-w-[350px] gap-6">
           <div className="grid gap-2 text-center">
              <h1 className="text-3xl font-bold">{type === 'register' ? 'Register' : 'Login'}</h1>
@@ -120,7 +154,7 @@ const AuthForm = ({type, states, cities, selectedState, handleStateChange, loadi
                         placeholder="Select Gender"
                         id="gender"
                         type="dropdown"
-                        options={cities}
+                        options={gender}
                       />
                     </div>
                     <CustomAuthFormField
@@ -143,6 +177,7 @@ const AuthForm = ({type, states, cities, selectedState, handleStateChange, loadi
                       id="email"
                       type="email"
                     />
+                    
                     <CustomAuthFormField
                       formControl={form.control}
                       name="password"
@@ -150,20 +185,31 @@ const AuthForm = ({type, states, cities, selectedState, handleStateChange, loadi
                       placeholder="Enter your Password"
                       id="password"
                       type="password"
+                      {...(type === 'login' && { showForgotPassword: true })}
                     />
                     {type === 'register' && (
+                      <div className='pb-1'>
                       <CustomAuthFormField
                         formControl={form.control}
                         name="confirmPassword"
                         label="Confirm Password"
                         placeholder="Enter your Password Again"
                         id="confirmPassword"
-                        type="confirmPassword"
-                      />
+                        type="password"
+                      /></div>
                     )}
                   </>
                 )}
-                {(type !== 'register' || step!== 1) && (
+                <Button type="submit" disabled={isLoading} className="w-full">
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20}
+                      className='animate-spin'/> &nbsp;
+                      Loading...
+                    </>
+                  ) : (type === 'register' && step === 1) ? 'Submit' : type === 'register' ? 'Register' : 'Login'}
+                </Button>
+                {/* {(type !== 'register' || step!== 1) && (
                   <Button type="submit" disabled={isLoading} className="w-full">
                   {isLoading ? (
                     <>
@@ -173,7 +219,7 @@ const AuthForm = ({type, states, cities, selectedState, handleStateChange, loadi
                     </>
                   ) : type === 'register' ? 'Register' : 'Login'}
                 </Button>
-                )}
+                )} */}
               </form>
             </Form>
             {(type === 'register' && step === 1) && (

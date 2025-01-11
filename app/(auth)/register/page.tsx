@@ -1,11 +1,11 @@
 "use client";
 import AuthForm from '@/components/forms/AuthForm';
 import React, { useState, useEffect } from 'react';
-import { fetchStates, fetchCities } from '@/lib/stateCityApiUtils';
-import { State, City } from '@/lib/types';
+//import { fetchStates, fetchCities } from '@/lib/stateCityApiUtils';
+//import { State, City } from '@/lib/types';
 
 const Register: React.FC = () => {
-  const [states, setStates] = useState<State[]>([]);
+  /* const [states, setStates] = useState<State[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [selectedState, setSelectedState] = useState('');
   const [loadingCities, setLoadingCities] = useState(false);
@@ -32,7 +32,7 @@ const Register: React.FC = () => {
 
   const handleStateChange = (value: string) => {
     setSelectedState(value);
-  };
+  }; */
 
   /* const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedState = event.target.value;
@@ -71,11 +71,11 @@ const Register: React.FC = () => {
     <section className='flex-center size-full max-sm:px-6'>
       <AuthForm 
         type='register' 
-        states={states} 
+        /* states={states} 
         cities={cities} 
         selectedState={selectedState} 
         handleStateChange={handleStateChange} 
-        loadingCities={loadingCities}
+        loadingCities={loadingCities} */
       />
     </section>
   );
