@@ -16,6 +16,7 @@ export const authFormSchema = (type: 'login' | 'register') => {
     dateOfBirth: type === 'login' ? z.string().optional() : z.string().date(),
     gender: type === 'login' ? z.string().optional() : z.string(),
     phoneNumber: type === 'login' ? z.string().optional() : z.string().regex(/^[6-9]\d{9}$/, { message: "Invalid Phone number" }),
+    aadhaarNumber: type === 'login' ? z.string().optional() : z.string().regex(/^\d{12}$/, { message: "Invalid Aadhaar number" }),
     role: type === 'login' ? z.string().optional() : z.string(),
     chronicDiseases: z.string().optional(),
     timeStamp: type === 'login' ? z.string().optional() : z.string().datetime(),

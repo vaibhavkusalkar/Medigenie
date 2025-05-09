@@ -4,13 +4,19 @@ import {
 	FormField,
 	FormLabel,
 	FormItem,
+	FormDescription,
 	FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Control, FieldPath } from "react-hook-form";
 import { z } from "zod";
 import { authFormSchema } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react"
+import { format } from "date-fns"
 import Link from "next/link";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import {
 	Select,
 	SelectContent,
@@ -18,6 +24,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 
 const formSchema = authFormSchema("register");
 
@@ -56,12 +67,17 @@ const CustomAuthFormField = ({
 						{name === "password" ? (
 							<>
 								<div className="flex items-center">
-									<FormLabel htmlFor={name}>{label}</FormLabel>
-                  {showForgotPassword && (
-                    <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
-									  	Forgot your password?
-									  </Link>
-                  )}
+									<FormLabel htmlFor={name}>
+										{label}
+									</FormLabel>
+									{showForgotPassword && (
+										<Link
+											href="/forgot-password"
+											className="ml-auto inline-block text-sm underline"
+										>
+											Forgot your password?
+										</Link>
+									)}
 								</div>
 								<FormControl>
 									<Input
@@ -96,7 +112,7 @@ const CustomAuthFormField = ({
 											}`}
 										>
 											<SelectValue
-                        						id={id}
+												id={id}
 												placeholder={placeholder}
 											/>
 										</SelectTrigger>
@@ -105,7 +121,7 @@ const CustomAuthFormField = ({
 												<SelectItem
 													key={index}
 													value={options.name}
-                          //value={options.iso || options.name}  
+													//value={options.iso || options.name}
 												>
 													{options.name}
 												</SelectItem>
@@ -113,6 +129,56 @@ const CustomAuthFormField = ({
 										</SelectContent>
 									</Select>
 								</FormControl>
+							</>
+						) : type === "calender" ? (
+							<>
+								<FormLabel htmlFor={name}>{label}</FormLabel>
+								<Popover>
+									<PopoverTrigger asChild>
+										<FormControl>
+											<Button
+												variant={"outline"}
+												className={cn(
+													"w-[240px] pl-3 text-left font-normal",
+													!field.value &&
+														"text-muted-foreground"
+												)}
+											>
+												{field.value ? (
+													format(field.value, "PPP")
+												) : (
+													<span>Pick a date</span>
+												)}
+												<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+											</Button>
+										</FormControl>
+									</PopoverTrigger>
+									<PopoverContent
+										className="w-auto p-0"
+										align="start"
+									>
+										<Calendar
+											mode="single"
+											selected={
+												field.value
+													? new Date(field.value)
+													: undefined
+											} // Convert string to Date
+											onSelect={(date) => {
+												if (date) {
+													const formattedDate = format(date, "yyyy-MM-dd"); // Format the date to "YYYY-MM-DD"
+													field.onChange(formattedDate); // Update the form value with the formatted date
+												  }
+											} }// Convert Date to ISO string for the form
+											disabled={(date) =>
+												date > new Date() ||
+												date < new Date("1900-01-01")
+											}
+											initialFocus
+										/>
+									</PopoverContent>
+								</Popover>
+								<FormMessage />
 							</>
 						) : (
 							<>

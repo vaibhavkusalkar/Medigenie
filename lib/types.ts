@@ -10,3 +10,8 @@ export interface City {
 export interface Gender {
   name: string
 }
+
+export interface BarModifier {
+  gain: number;
+  phaseOffset: number;
+}
