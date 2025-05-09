@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 270 50% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 262.1 83.3% 57.8%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-violet-900/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-violet-800/50;
+}
+
+/* Add glow effects */
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 5px rgb(139 92 246 / 0.5),
+               0 0 10px rgb(139 92 246 / 0.3);
+  }
+  
+  .button-glow {
+    box-shadow: 0 0 10px rgb(139 92 246 / 0.3),
+                0 0 30px rgb(139 92 246 / 0.2),
+                inset 0 0 1px rgb(139 92 246 / 0.1);
+  }
+
+  .primary-button-innerglow {
+    box-shadow: 0 0 1px rgb(139 92 246 / 0.3),
+                0 0 2px rgb(139 92 246 / 0.2),
+                inset 0 0 7px rgba(128, 80, 243, 0.25),
+                inset 0 0 20px rgba(128, 80, 243, 0.25),
+                inset 0 0 100px rgb(139 92 246 / 0.05);
+  }
+
+  .primary-button-innerglow:hover {
+    border: 1px solid white/40;
+    box-shadow: 0 0 2px rgb(139 92 246 / 0.3),
+                0 0 5px rgb(139 92 246 / 0.2),
+                inset 0 0 10px rgba(128, 80, 243, 0.3),
+                inset 0 0 20px rgba(128, 80, 243, 0.3),
+                inset 0 0 100px rgb(139 92 246 / 0.1);
+  }
+
+  .secondary-button-innerglow:hover {
+    background: transparent;
+    
+    box-shadow: 0 0 2px rgb(139 92 246 / 0.3),
+                0 0 5px rgb(139 92 246 / 0.2),
+                inset 0 0 10px rgba(128, 80, 243, 0.1),
+                inset 0 0 20px rgba(128, 80, 243, 0.05),
+                inset 0 0 40px rgb(139 92 246 / 0.1);
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    @apply shadow-lg shadow-purple-500/20;
+  }
+}
+
+/* Bento Grid Styles */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.bento-item {
+  @apply rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg transition-all;
+}
+
+.bento-item:hover {
+  @apply shadow-purple-500/20 border-purple-500/20;
+}
+
+.bento-item-large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.bento-item-medium {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.bento-item-small {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.bento-item-cta {
+  grid-column: span 2;
+  grid-row: span 1;
+}
