@@ -1,16 +1,13 @@
 "use client";
-import React, { use } from "react";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import {
-	Card,
-	CardContent,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardFooter,
+	CardContent,
 } from "@/components/custom/CustomCard";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail } from "lucide-react";
+import CustomSpotlightCard from "@/components/custom/CustomSpotlightCard"; // <-- Custom Spotlight wrapper
 import AudioGridContent from "@/components/dashboard/AudioGridContent";
 import PatientGridContent from "@/components/dashboard/PatientGridContent";
 import SummaryGridContent from "@/components/dashboard/SummaryGridContent";
@@ -18,74 +15,62 @@ import DiseaseGridContent from "@/components/dashboard/DiseaseGridContent";
 import MedicationGrid from "@/components/dashboard/MedicationGrid";
 
 const DoctorDashboard = () => {
-	const diseases = [
-		{ name: "Diabetes", percentage: 20 },
-		{ name: "Hypertension", percentage: 55 },
-		{ name: "Heart Disease", percentage: 85 },
-		{ name: "Asthma", percentage: 40 },
-		{ name: "Cancer", percentage: 95 },
-		{ name: "Heart Disease", percentage: 85 },
-		{ name: "Asthma", percentage: 40 },
-		{ name: "Cancer", percentage: 95 },
-	];
-
-	// Function to determine the category based on percentage
-	const getCategory = (percentage: number) => {
-		if (percentage < 30) return "Low Chances";
-		if (percentage < 70) return "Medium Chances";
-		return "High Chances";
-	};
-
 	return (
 		<div className="flex flex-col min-h-0 h-[calc(100vh-64px)] w-full p-4">
-			{/* Split into 2 rows using flex and flex-grow */}
+			{/* Layout: Two rows */}
 			<div className="flex flex-col flex-grow gap-4 min-h-0 overflow-hidden">
-				{/* Row 1: 60% Summary and 40% Patient Details */}
+				{/* Row 1 */}
 				<div className="flex flex-1 gap-4 min-h-0">
+					{/* Summary */}
 					<div className="w-3/5 flex flex-col min-h-0">
-						<Card className="flex flex-col flex-grow min-h-0">
+						<CustomSpotlightCard className="flex flex-col flex-grow min-h-0">
 							<CardHeader>
-								<CardTitle className="text-xl text-gray-800">
+								<CardTitle className="text-xl text-white">
 									Summary
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="flex-grow overflow-auto">
 								<SummaryGridContent />
 							</CardContent>
-						</Card>
+						</CustomSpotlightCard>
 					</div>
+
+					{/* Patient Details */}
 					<div className="w-2/5 flex flex-col min-h-0">
-						<Card className="flex flex-col flex-grow min-h-0">
+						<CustomSpotlightCard className="flex flex-col flex-grow min-h-0">
 							<CardHeader>
-								<CardTitle className="text-xl text-gray-800">
+								<CardTitle className="text-xl text-white">
 									Patient Details
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="flex-grow overflow-auto">
 								<PatientGridContent />
 							</CardContent>
-						</Card>
+						</CustomSpotlightCard>
 					</div>
 				</div>
 
-				{/* Row 2: 30% Audio, 30% Disease, 40% Medication */}
+				{/* Row 2 */}
 				<div className="flex flex-1 gap-4 min-h-0">
+					{/* Audio */}
 					<div className="w-1/3 flex flex-col min-h-0">
-						<Card className="flex flex-col flex-grow min-h-0">
+						<CustomSpotlightCard className="flex flex-col flex-grow min-h-0">
 							<CardHeader>
-								<CardTitle className="text-xl text-gray-800">
+								<CardTitle className="text-xl text-white">
 									Audio/Voice
 								</CardTitle>
 							</CardHeader>
-							<CardContent className="flex-grow overflow-auto flex items-center justify-center">
+							<CardContent className="flex-grow overflow-auto flex items-center justify-center z-30">
 								<AudioGridContent />
 							</CardContent>
-						</Card>
+						</CustomSpotlightCard>
 					</div>
+
+					{/* Disease */}
 					<div className="w-1/3 flex flex-col min-h-0">
-						<Card className="flex flex-col flex-grow min-h-0">
+						<CustomSpotlightCard className="flex flex-col flex-grow min-h-0">
 							<CardHeader>
-								<CardTitle className="text-xl text-gray-800">
+								<CardTitle className="text-xl text-white">
 									Disease
 								</CardTitle>
 							</CardHeader>
@@ -94,8 +79,10 @@ const DoctorDashboard = () => {
 									<DiseaseGridContent />
 								</div>
 							</CardContent>
-						</Card>
+						</CustomSpotlightCard>
 					</div>
+
+					{/* Medication (Already a custom grid so we just wrap it) */}
 					<div className="w-1/3 flex flex-col min-h-0">
 						<MedicationGrid />
 					</div>

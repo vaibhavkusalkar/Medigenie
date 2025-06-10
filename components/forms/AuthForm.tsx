@@ -77,7 +77,7 @@ const AuthForm = ({
 		}
 	};
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
+	const onFormSubmit = (values: z.infer<typeof formSchema>) => {
 		try {
 			alert("Form submitted!");
 			console.log("onSubmit called", values);
@@ -105,8 +105,14 @@ const AuthForm = ({
 
 	return (
 		<div className="w-full h-screen flex flex-col lg:grid lg:grid-cols-2 px-6 lg:px-0 overflow-hidden">
-			<div className="hidden lg:flex items-center justify-center bg-gray-400">
+			<div className="hidden lg:flex items-center justify-center bg-gray-950">
 				{/* Add any additional content for the second column here */}
+				<Image
+					src='/assets/images/illustration.svg'
+					alt="Auth Illustration"
+					width={500}
+					height={500}
+					className="object-cover"/>
 			</div>
 			<div className="flex flex-col flex-1 items-center justify-center py-10">
 				<div className="mx-auto grid justify-center w-full max-w-[350px] gap-6">
@@ -123,7 +129,7 @@ const AuthForm = ({
 					<div className="grid gap-4">
 						<Form {...form}>
 							<form
-								onSubmit={form.handleSubmit(onSubmit)}
+								onSubmit={handleSubmit(onFormSubmit)}
 								className="space-y-5"
 							>
 								{type === "register" && step === 2 && (

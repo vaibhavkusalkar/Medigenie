@@ -101,12 +101,12 @@ const AudioGridContent = () => {
     return (
         <div className="relative h-full w-full flex items-center justify-center">
             {/* Mic icon */}
-            <div className="flex h-full bg-white absolute z-10 items-center px-3">
+            <div className="flex h-full absolute z-10 items-center px-3">
                 <button
                     onClick={handleToggleRecording}
-                    className="bg-white py-1.5 rounded-full flex items-center justify-center"
+                    className="bg-white opacity-100 py-1.5 rounded-full flex items-center justify-center p-2 "
                 >
-                    {isRecording ? <Mic size={50} /> : <MicOff size={50} />}
+                    {isRecording ? <Mic size={70} color="black"/> : <MicOff size={50} color="black"/>}
                 </button>
             </div>
 
@@ -118,7 +118,7 @@ const AudioGridContent = () => {
                 return (
                     <div
                         key={idx}
-                        className="absolute bg-black rounded-full w-[2px] transition-all duration-150 ease-in-out"
+                        className="absolute bg-white rounded-full w-[2px] transition-all duration-150 ease-in-out"
                         style={{
                             height: `${totalHeight}px`,
                             bottom: "50%",

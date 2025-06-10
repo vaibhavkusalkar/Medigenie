@@ -1,19 +1,9 @@
 import React from "react";
 
 const diseases = [
-	{ name: 'Diabetes', percentage: 20 },
-	{ name: 'Hypertension', percentage: 55 },
-	{ name: 'Heart Disease', percentage: 85 },
-	{ name: 'Asthma', percentage: 40 },
-	{ name: 'Cancer', percentage: 95 },
-	{ name: 'Heart Disease', percentage: 85 },
-	{ name: 'Asthma', percentage: 40 },
-	{ name: 'Cancer', percentage: 95 },
-  { name: 'Diabetes', percentage: 20 },
-	{ name: 'Hypertension', percentage: 55 },
-	{ name: 'Heart Disease', percentage: 85 },
-	{ name: 'Asthma', percentage: 40 },
-
+	{ name: 'Type 2 Diabetes', percentage: 92 },
+	{ name: 'Hypertension', percentage: 69 },
+	{ name: 'Hyperlipidemia', percentage: 20 }
 ];
 
 // Determine risk level based on percentage
@@ -33,7 +23,7 @@ const DiseaseGridContent = () => {
 						key={index}
 						className="flex justify-between items-center border-b pb-2"
 					>
-						<span className="text-gray-800 font-medium">{disease.name}</span>
+						<span className="text-white font-medium">{disease.name}</span>
 						<span className={`text-sm font-semibold ${category.color}`}>
 							{category.label}
 						</span>

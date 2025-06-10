@@ -2,41 +2,17 @@ import React from "react";
 
 const SummaryGridContent = () => {
 	const summary_data = `<p>
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
-    <strong>Important:</strong> This is a <em>summary</em> of the data.
+	<br>
+      The patient mentioned feeling <strong>tired most of the time</strong>, along with experiencing <strong>increased thirst</strong> and <strong>frequent urination</strong>. 
+      These symptoms came up during a discussion about his recent lifestyle habits and lab results.<br/>
+      He also seemed concerned about how long the fatigue has been going on. 
+      Given the combination of symptoms and his history, it might be worth focusing on possible <em>metabolic issues like Type 2 Diabetes</em> or other <em>cardiovascular risks</em> as next steps.
     </p>`;
+
 
 	return (
 		<div
-			className="text-lg text-gray-800"
+			className="text-lg text-white"
 			dangerouslySetInnerHTML={{
 				__html: summary_data,
 			}}

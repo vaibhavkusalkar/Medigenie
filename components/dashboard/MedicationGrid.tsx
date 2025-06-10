@@ -14,6 +14,7 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
+import CustomSpotlightCard from "../custom/CustomSpotlightCard";
 
 const MedicationGrid = () => {
 	const [error, setError] = useState("");
@@ -59,9 +60,10 @@ const MedicationGrid = () => {
 	}, [selectedMedicines]);
 
 	return (
-		<Card className="flex flex-col flex-grow min-h-0">
+
+		<CustomSpotlightCard className="flex flex-col flex-grow min-h-0 bg-transparent border-0">
 			<CardHeader className="flex flex-row items-center h-14 justify-between">
-				<CardTitle className="text-xl text-gray-800">
+				<CardTitle className="text-xl text-white">
 					Medication
 				</CardTitle>
 
@@ -74,22 +76,22 @@ const MedicationGrid = () => {
 								placeholder="Search medicines"
 								value={searchInput}
 								onChange={(e) => setSearchInput(e.target.value)}
-								className="px-3 py-1 border border-gray-200 rounded-full w-48 text-sm transition-all duration-700"
+								className="px-3 py-1 border border-gray-500 rounded-full w-40 text-sm transition-all duration-700 bg-transparent"
 								autoFocus
 							/>
 							<button
 								onClick={handleToggleInput}
-								className="ml-2 p-1 hover:bg-gray-100 rounded-full transition"
+								className="ml-2 p-1 hover:bg-gray-600 rounded-full transition"
 							>
-								<X className="w-6 h-6 text-gray-800" />
+								<X className="w-6 h-6 text-white" />
 							</button>
 						</div>
 					) : (
 						<button
 							onClick={handleToggleInput}
-							className="p-2 hover:bg-gray-100 rounded-full transition-all"
+							className="p-2 hover:bg-gray-600 rounded-full transition-all"
 						>
-							<Search className="w-5 h-5 text-gray-800" />
+							<Search className="w-5 h-5 text-white" />
 						</button>
 					)}
 				</div>
@@ -98,14 +100,14 @@ const MedicationGrid = () => {
 			<CardContent className="flex-grow overflow-auto">
 				{isInputVisible ? (
 					<div className="max-w-md mx-auto mb-4">
-						<Command className="rounded-lg">
+						<Command className="rounded-lg bg-transparent">
 							<CommandList>
 								{filteredMedicines.length > 0 ? (
 									<CommandGroup>
 										{filteredMedicines.map((med) => (
 											<CommandItem
 												key={med}
-												className="flex justify-between items-center py-1 text-md"
+												className="flex justify-between items-center py-1 text-md text-white"
 											>
 												<label className="flex items-center gap-2 cursor-pointer">
 													<input
@@ -137,7 +139,7 @@ const MedicationGrid = () => {
 								{selectedMedicines.map((med) => (
 									<div
 										key={med}
-										className="flex justify-between items-center py-1 text-md"
+										className="flex justify-between items-center py-1 text-md text-white"
 									>
 										<label className="flex items-center gap-2 cursor-pointer">
 											<input
@@ -155,12 +157,12 @@ const MedicationGrid = () => {
 						)}
 					</div>
 				) : (
-					<p className="text-md text-gray-500 text-center flex items-center justify-center h-full">
+					<p className="text-md text-white text-center flex items-center justify-center h-full">
 						{error}
 					</p>
 				)}
 			</CardContent>
-		</Card>
+		</CustomSpotlightCard>
 	);
 };
 

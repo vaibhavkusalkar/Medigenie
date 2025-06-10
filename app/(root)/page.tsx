@@ -5,9 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import './style.css';
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 import { Brain, Folder, Mic, BarChart3, Users, ArrowRight } from 'lucide-react'
 
 const Home = () => {
+  const router = useRouter();
   const [scrollY, setScrollY] = useState(0)
   const photoRef = useRef<HTMLDivElement>(null)
 
@@ -78,10 +80,10 @@ const Home = () => {
           </div>
     
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" className="rounded-full text-gray-300 hover:text-white hover:secondary-button-innerglow transition-all">
+            <Button onClick={()=>router.replace("register")} variant="ghost" className="rounded-full text-gray-300 hover:text-white hover:secondary-button-innerglow transition-all">
               Register
             </Button>
-            <Button className="backdrop-blur-sm bg-white/2 border border-white/30 shadow-lg shadow-purple-500/10 rounded-2xl px-6 hover:bg-transperent text-white primary-button-innerglow transition-all">
+            <Button onClick={()=>router.replace("login")} className="backdrop-blur-sm bg-white/2 border border-white/30 shadow-lg shadow-purple-500/10 rounded-2xl px-6 hover:bg-transperent text-white primary-button-innerglow transition-all">
               Login
             </Button>
           </div>
@@ -132,7 +134,7 @@ const Home = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-violet-600/30 to-purple-600/30 mix-blend-overlay" />
             <div className="relative w-full h-full">
               <Image
-                src="/assets/images/screenshot.jpg"
+                src="/assets/images/dashboard.png"
                 layout="fill"
                 objectFit="cover"
                 alt="MediGenie Interface"
@@ -150,15 +152,15 @@ const Home = () => {
           <div className="grid grid-cols-4 gap-6">
             {/* Large Block: AI-Powered Disease Prediction */}
             <div className="col-span-2 row-span-2 p-8 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg transition-all hover:shadow-purple-500/20 hover:border-purple-500/20 group">
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col h-full justify-center">
                 <div className="mb-6">
                   <Brain className="w-12 h-12 text-blue-400 animate-pulse" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-glow">AI-Powered Disease Prediction</h3>
                 <p className="text-gray-300 mb-6">Harness the power of advanced AI algorithms to predict potential diseases and provide early interventions, improving patient outcomes.</p>
-                <div className="mt-auto">
+                {/* <div className="mt-auto">
                   <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -198,18 +200,6 @@ const Home = () => {
               <p className="text-sm text-gray-300">Intuitive interface prioritizing patient care and engagement.</p>
             </div>
 
-            {/* Large Block: CTA */}
-            <div className="col-span-2 row-span-1 p-8 rounded-3xl bg-gradient-to-br from-violet-600/30 to-purple-600/30 backdrop-blur-lg border border-white/10 shadow-lg transition-all hover:shadow-purple-500/30 hover:border-purple-500/30 group">
-              <div className="flex flex-col h-full justify-center items-center text-center">
-                <h3 className="text-3xl font-bold text-white mb-6 group-hover:text-glow">Revolutionize Healthcare with AI</h3>
-                <Button
-                  className="text-lg bg-white text-purple-700 hover:bg-purple-100 transition-all button-glow px-8 py-4 rounded-full group-hover:shadow-lg group-hover:shadow-purple-500/50"
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 w-5 h-5 animate-pulse" />
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
       </section>

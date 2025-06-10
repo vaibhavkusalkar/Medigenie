@@ -22,7 +22,7 @@ export default function RootLayout({
   };
 
   return (
-    <main>
+    <main className="min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/assets/images/new_background.png')" }}>
       <CustomSidebar breadcrumbData={breadcrumbData}>
         {children}
       </CustomSidebar>
