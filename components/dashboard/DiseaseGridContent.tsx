@@ -1,4 +1,5 @@
-import React from "react";
+import { TopDiseases } from "@/types/api";
+import React, { useEffect } from "react";
 
 const diseases = [
 	{ name: 'Type 2 Diabetes', percentage: 92 },
@@ -14,6 +15,20 @@ const getCategory = (percentage: number) => {
 };
 
 const DiseaseGridContent = () => {
+	const [diseases, setDiseases] = React.useState<TopDiseases[]>([]);
+	
+	useEffect(() => {
+		const stored = sessionStorage.getItem("top_5_diseases");
+    if (stored) {
+        try {
+            const parsed: TopDiseases[] = JSON.parse(stored);
+            setDiseases(parsed);
+        } catch {
+            setDiseases([]);
+        }
+    }
+	}, [sessionStorage.getItem("top_5_diseases")]);
+
 	return (
 		<div className="space-y-3 pt-3">
 			{diseases.map((disease, index) => {

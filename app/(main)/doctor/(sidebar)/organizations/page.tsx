@@ -1,28 +1,60 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
+import axios from "axios";
+import { GetDoctorOrganizationResponse } from "@/types/api";
+ 
 const OrganizationsPage = () => {
-  const router = useRouter();
-  const organizations = [
-    {
-      id: 1,
-      name: "City Hospital",
-    },
-    {
-      id: 2,
-      name: "Green Valley Clinic",
-    },
-    {
-      id: 3,
-      name: "Sunrise Medical Center",
-    },
-  ]
+  
+  const [organizations, setOrganizations] = React.useState<{ id: string; name: string }[]>([]);
 
-  const handleSelectOrganization = (orgId: number, orgName: string) => {
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      try {
+        const userId = sessionStorage.getItem("doctorId");
+        if (!userId) {
+          console.error("No doctorId found in sessionStorage.");
+          return;
+        }
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL || ""}/get-doctor-organization`;
+        const response = await axios.get<GetDoctorOrganizationResponse>(
+          apiUrl,
+          {
+            headers: {
+              "UserID": userId,
+            },
+          }
+        );
+        setOrganizations(response.data.organization);
+        console.log("Fetched organizations:", response.data.organization);
+      } catch (error) {
+        console.error("Failed to fetch organizations:", error);
+      }
+    };
+  
+    fetchOrganizations();
+  }, []);
+
+  const router = useRouter();
+  // const organizations = [
+  //   {
+  //     id: 1,
+  //     name: "City Hospital",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Green Valley Clinic",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Sunrise Medical Center",
+  //   },
+  // ]
+
+  const handleSelectOrganization = (orgId: string, orgName: string) => {
 
     const organization = {
       id: orgId,

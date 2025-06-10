@@ -16,23 +16,37 @@ import {
 } from "@/components/ui/command";
 import CustomSpotlightCard from "../custom/CustomSpotlightCard";
 
+
 const MedicationGrid = () => {
 	const [error, setError] = useState("");
 	const [searchInput, setSearchInput] = useState("");
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	const [selectedMedicines, setSelectedMedicines] = useState<string[]>([]);
+	const [medicines, setMedicines] = React.useState<string[]>([]);
+	
+	useEffect(() => {
+			const stored = sessionStorage.getItem("prescribed_medicine");
+		if (stored) {
+			try {
+				const parsed: string[] = JSON.parse(stored);
+				setMedicines(parsed);
+			} catch {
+				setMedicines([]);
+			}
+		}
+		}, [sessionStorage.getItem("prescribed_medicine")]);
 
 	// Static medicine list
-	const medicines = [
-		"Paracetamol",
-		"Ibuprofen",
-		"Aspirin",
-		"Amoxicillin",
-		"Metformin",
-		"Atorvastatin",
-		"Omeprazole",
-		"Losartan",
-	];
+	// const medicines = [
+	// 	"Paracetamol",
+	// 	"Ibuprofen",
+	// 	"Aspirin",
+	// 	"Amoxicillin",
+	// 	"Metformin",
+	// 	"Atorvastatin",
+	// 	"Omeprazole",
+	// 	"Losartan",
+	// ];
 
 	const filteredMedicines = medicines.filter((med) =>
 		med.toLowerCase().includes(searchInput.toLowerCase())

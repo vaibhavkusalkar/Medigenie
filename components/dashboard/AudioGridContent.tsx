@@ -1,6 +1,8 @@
 'use client';
 import { Mic, MicOff } from "lucide-react";
 import React, { useRef, useState } from "react";
+import axios from "axios";
+import { GetAnalyzeResponse } from "@/types/api";
 
 const BAR_COUNT = 41; // Must be odd for a center bar
 const CENTER_INDEX = Math.floor(BAR_COUNT / 2);
@@ -12,6 +14,7 @@ const AudioGridContent = () => {
     const [levels, setLevels] = useState<number[]>(Array(BAR_COUNT).fill(2));
     const animationRef = useRef<number | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null); // Reference to the MediaStream
+    const [transcript, setTranscript] = useState<string>("");
 
     const barModifiers = useRef(
         Array.from({ length: CENTER_INDEX + 1 }, () => ({
@@ -19,6 +22,31 @@ const AudioGridContent = () => {
             phaseOffset: Math.random() * 1000,
         }))
     );
+
+
+    const fetchAnalyse = async () => {
+          try {
+            const consultationId = sessionStorage.getItem("consultationId");
+            if (!consultationId) {
+              console.error("No consultationId found in sessionStorage.");
+              return;
+            }
+            const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL || ""}/analyze`;
+            const response = await axios.post<GetAnalyzeResponse>(
+                apiUrl,
+                {
+                    transcript,         // include transcript from state
+                    consultationId,     // include consultationId from sessionStorage
+                }
+            );
+            sessionStorage.setItem("prescribedMedicine", JSON.stringify(response.data.prescribed_medicine));
+            sessionStorage.setItem("topDiseases", JSON.stringify(response.data.top_5_diseases));
+            sessionStorage.setItem("transcriptSummary", response.data.transcript_summary);
+            console.log("Fetched Analyze:", response.data);
+          } catch (error) {
+            console.error("Failed to fetch Anayze:", error);
+          }
+        };
 
     const startRecording = async () => {
         let audioContext: AudioContext;
@@ -92,6 +120,10 @@ const AudioGridContent = () => {
     const handleToggleRecording = () => {
         if (isRecording) {
             stopRecording();
+            //transcribe will be saved and passed to the server
+            setTranscript("Hello doc , i am facing issue with my stomach")
+            
+
         } else {
             startRecording();
         }

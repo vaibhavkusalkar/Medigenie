@@ -80,6 +80,7 @@ const AuthForm = ({
 	const onFormSubmit = (values: z.infer<typeof formSchema>) => {
 		try {
 			alert("Form submitted!");
+			
 			console.log("onSubmit called", values);
 		} catch (err) {
 			console.error("onSubmit crashed:", err);
