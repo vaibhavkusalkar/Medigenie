@@ -1,3 +1,4 @@
+'use client';
 import { TopDiseases } from "@/types/api";
 import React, { useEffect } from "react";
 

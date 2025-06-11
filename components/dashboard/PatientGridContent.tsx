@@ -1,33 +1,46 @@
+'use client';
 import { PatientData } from "@/types/api";
 import { Mail, Phone } from "lucide-react";
 import React, { useEffect } from "react";
 
 const PatientGridContent = () => {
-	const [userData, setUserData] = React.useState<PatientData | null>(null);
+	var userData = {} as PatientData;	
+	const storedUserData = sessionStorage.getItem("patientData");
+	if (!storedUserData) {
+	  console.error("No patientData found in sessionStorage.");
+	  return;
+	}
+	const parsedUserData: PatientData = JSON.parse(storedUserData);
+    userData = parsedUserData;
+	console.log("Parsed User Data:", userData);
 
-	    useEffect(() => {
-        // Check if user data is available in localStorage
-        const storedUserData = localStorage.getItem("userData");
-        if (!storedUserData) {
-            console.error("User data not found in localStorage.");
-            return;
-        }
+	// const [userData, setUserData] = React.useState<PatientData | null>(null);
+	// const storedUserData = sessionStorage.getItem("patientData");
+	
+	// useEffect(() => {
+	//   if (!storedUserData) {
+	// 	console.error("No patientData found in sessionStorage.");
+	// 	return;
+	//   }
+	//   try {
+	// 	const parsedUserData: PatientData = JSON.parse(storedUserData);
+	// 	setUserData(parsedUserData);
+	// 	console.log("Saved data :", userData);
+	// 	console.log("Parsed User Data:", parsedUserData);
+	//   } catch (error) {
+	// 	console.error("Error parsing user data:", error);
+	//   }
+	// }, [storedUserData]);
+	
+	//console.log("Stored User Data:", storedUserData);
 
-        try {
-            // Parse the user data
-            const parsedUserData: PatientData = JSON.parse(storedUserData);
-            setUserData(parsedUserData);
-        } catch (error) {
-            console.error("Error parsing user data:", error);
-        }
-    }, []);
 
 	return (
 		<div className="flex flex-col items-center text-center gap-1.5 px-2">
 			<div className="w-16 h-16 flex items-center justify-center rounded-full bg-muted">
 				<img
 					src={
-						userData.gender === "male"
+						userData.gender === "Male"
 							? "/assets/images/male.jpg"
 							: "/assets/images/female.jpg"
 					}
@@ -55,8 +68,9 @@ const PatientGridContent = () => {
 					Chronic Diseases
 				</p>
 				<p className="text-white text-sm text-muted-foreground">
-					{/* Map through chronicDiseases and join them with commas */}
-					{userData!.chronic_diseases.join(", ")}
+				  {Array.isArray(userData.chronic_diseases)
+					? userData.chronic_diseases.join(", ")
+					: String(userData.chronic_diseases).replace(/[{}]/g, "").split(",").join(", ")}
 				</p>
 			</div>
 

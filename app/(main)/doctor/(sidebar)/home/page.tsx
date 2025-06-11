@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { GetPatientDataResponse } from "@/types/api";
+import { headers } from "next/headers";
 
 const DoctorHome = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -19,24 +20,18 @@ const DoctorHome = () => {
     setIsLoading(true);
     setError("");
     setPatient(null);
-
+    console.log("Searching for patient:", searchInput);
     try {
-
       const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL || ""}/get-patient-data`;
 
-      // Constructing the query params
-      const params = {
-        "user_email": searchInput
-      };
-
       // Making the GET request with query params
-    const response = await axios.get(apiUrl, {
-      data: {
-        "user_email": searchInput,
-      },
-    });
+      const response = await axios.post<GetPatientDataResponse>(apiUrl, {
+        user_email: searchInput, // Correctly pass the data here
+      });
+  
 
       if (response.data.patient) {
+        console.log("Patient found:", response.data.patient);
         setPatient(response.data.patient);
       } else {
         setError("No patient found.");
@@ -71,11 +66,23 @@ const DoctorHome = () => {
 
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      {patient && (
+            {patient && (
         <div className="mt-6 max-w-md mx-auto bg-gray-800 p-4 rounded shadow">
           <h2 className="text-xl font-semibold mb-2">Patient Info</h2>
           <p><strong>Name:</strong> {patient.name}</p>
           <p><strong>Phone:</strong> {patient.phone_number}</p>
+          {/* Add more patient fields as needed */}
+          <button
+            className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            onClick={() => {
+              sessionStorage.setItem("patientData", JSON.stringify(patient));
+              alert("Patient selected!");
+              
+              // You can also navigate or trigger other actions here
+            }}
+          >
+            Select Patient
+          </button>
         </div>
       )}
     </div>

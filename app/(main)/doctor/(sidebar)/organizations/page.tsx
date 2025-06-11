@@ -9,7 +9,7 @@ import { GetDoctorOrganizationResponse } from "@/types/api";
  
 const OrganizationsPage = () => {
   
-  const [organizations, setOrganizations] = React.useState<{ id: string; name: string }[]>([]);
+  const [organizations, setOrganizations] = React.useState<{ organization_id: string; organization_name: string }[]>([]);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -57,8 +57,8 @@ const OrganizationsPage = () => {
   const handleSelectOrganization = (orgId: string, orgName: string) => {
 
     const organization = {
-      id: orgId,
-      name: orgName,
+      organization_id: orgId,
+      organization_name: orgName,
     }
 
     sessionStorage.setItem("organization", JSON.stringify(organization))
@@ -71,14 +71,14 @@ const OrganizationsPage = () => {
       <h1 className="text-3xl font-bold text-center mb-8 text-white">Select Your Organization</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {organizations.map((org) => (
-          <Card key={org.id} className="border-1 hover:shadow-md transition-shadow">
+          <Card key={org.organization_id} className="border-1 hover:shadow-md transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-center">{org.name}</CardTitle>
+              <CardTitle className="text-lg font-semibold text-center">{org.organization_name}</CardTitle>
             </CardHeader>
             <CardContent>
               <Button 
                 className="w-full bg-gray-800"
-                onClick={() => handleSelectOrganization(org.id, org.name)}
+                onClick={() => handleSelectOrganization(org.organization_id, org.organization_name)}
               >
                 Select
               </Button>

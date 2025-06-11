@@ -1,7 +1,7 @@
 // Organization object for /get-doctor-organization
 export interface DoctorOrganization {
-  id: string;
-  name: string;
+  organization_id: string;
+  organization_name: string;
 }
 
 // Response type for /get-doctor-organization
@@ -13,10 +13,12 @@ export interface GetDoctorOrganizationResponse {
 
 // Patient object for /get-patient-data
 export interface PatientData {
-  chronic_diseases: string; 
+  chronic_diseases: string[]; 
   gender: string;
   name: string;
   phone_number: string;
+  dob: string;
+  email: string;
 }
 
 // Response type for /get-patient-data
@@ -40,3 +42,15 @@ export interface GetAnalyzeResponse {
     transcript_summary: string;
 }
 
+export interface RegisterResponse {
+  code: string;
+  message: string;
+  user_id: string;
+}
+
+export interface LoginResponse {
+  code: string;
+  message: string;
+  token?: string;
+  user_id: string;
+}

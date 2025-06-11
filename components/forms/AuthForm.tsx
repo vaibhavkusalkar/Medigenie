@@ -22,6 +22,8 @@ import CustomAuthFormField from "../custom/CustomAuthFormField";
 import { Loader2 } from "lucide-react";
 import { State, City, Gender } from "@/lib/types";
 import { format } from "date-fns";
+import axios from "axios";
+import { LoginResponse, RegisterResponse } from "@/types/api";
 
 interface AuthFormProps {
 	type: "login" | "register";
@@ -77,15 +79,10 @@ const AuthForm = ({
 		}
 	};
 
-	const onFormSubmit = (values: z.infer<typeof formSchema>) => {
-		try {
-			alert("Form submitted!");
-			
-			console.log("onSubmit called", values);
-		} catch (err) {
-			console.error("onSubmit crashed:", err);
-		}
-	};
+		const onFormSubmit = async (values: z.infer<typeof formSchema>) => {
+			alert("Submitted!");
+			console.log("onFormSubmit called", values);
+		};
 
 	/* 	const onSubmit = (values: z.infer<typeof formSchema>) => {
 		console.log("onSubmit called with values:", values);
@@ -238,7 +235,7 @@ const AuthForm = ({
 									type === "login") && (
 									<Button
 										type="submit"
-										disabled={isLoading}
+										// disabled={isLoading}
 										className="w-full"
 									>
 										{isLoading ? (

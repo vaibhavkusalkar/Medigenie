@@ -8,11 +8,21 @@ import {
 } from "@/components/custom/CustomCard";
 import { Button } from "@/components/ui/button";
 import CustomSpotlightCard from "@/components/custom/CustomSpotlightCard"; // <-- Custom Spotlight wrapper
-import AudioGridContent from "@/components/dashboard/AudioGridContent";
-import PatientGridContent from "@/components/dashboard/PatientGridContent";
-import SummaryGridContent from "@/components/dashboard/SummaryGridContent";
-import DiseaseGridContent from "@/components/dashboard/DiseaseGridContent";
-import MedicationGrid from "@/components/dashboard/MedicationGrid";
+//import AudioGridContent from "@/components/dashboard/AudioGridContent";
+// import PatientGridContent from "@/components/dashboard/PatientGridContent";
+// import SummaryGridContent from "@/components/dashboard/SummaryGridContent";
+// import DiseaseGridContent from "@/components/dashboard/DiseaseGridContent";
+// import MedicationGrid from "@/components/dashboard/MedicationGrid";// In your dashboard/page.tsx or wherever you use the grid:
+import dynamic from "next/dynamic";
+
+const AudioGridContent = dynamic(() => import('@/components/dashboard/AudioGridContent'), { ssr: false });
+const PatientGridContent = dynamic(() => import('@/components/dashboard/PatientGridContent'), { ssr: false });
+const SummaryGridContent = dynamic(() => import('@/components/dashboard/SummaryGridContent'), { ssr: false });
+const DiseaseGridContent = dynamic(() => import('@/components/dashboard/DiseaseGridContent'), { ssr: false });
+const MedicationGrid = dynamic(() => import('@/components/dashboard/MedicationGrid'), { ssr: false });
+// Do the same for other grids if needed
+
+// Then use <AudioGridContent /> as usual
 
 const DoctorDashboard = () => {
 	return (
