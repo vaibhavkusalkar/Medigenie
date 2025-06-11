@@ -7,7 +7,7 @@ import {
   stopRecording,
   uploadBlob,
 } from './useAudioRecorder';
-import { Mic, MicOff } from 'lucide-react';
+import { Mic, MicOff, Loader2 } from 'lucide-react';
 import { GetAnalyzeResponse, GetDoctorOrganizationResponse } from '@/types/api';
 import axios from 'axios';
 
@@ -44,6 +44,8 @@ const AudioRecorderComponent: React.FC = () => {
       sessionStorage.setItem('top5Diseases', JSON.stringify(result.data.top_5_disease));
       sessionStorage.setItem('transcriptSummary', result.data.transcript_summary);
       //setTranscript(response.transcript || 'No transcript returned');
+      //here i want to referesh the whle page
+      window.location.reload();
       isLoading(false);
     }
   };
@@ -55,8 +57,15 @@ const AudioRecorderComponent: React.FC = () => {
         <button
           onClick={isRecording ? handleStop : handleStart}
           className="bg-white opacity-100 py-1.5 rounded-full flex items-center justify-center p-4 "
+          disabled={loading}
         >
-          {isRecording ? <Mic size={70} color="black" /> : <MicOff size={70} color="black" />}
+          {loading ? (
+            <Loader2 size={50} color="black" className="animate-spin" />
+          ) : isRecording ? (
+            <Mic size={70} color="green" />
+          ) : (
+            <MicOff size={70} color="red" />
+          )}
         </button>
       </div>
     </div>
