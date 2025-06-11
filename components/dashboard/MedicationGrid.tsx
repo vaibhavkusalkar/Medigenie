@@ -25,7 +25,7 @@ const MedicationGrid = () => {
 	const [medicines, setMedicines] = React.useState<string[]>([]);
 	
 	useEffect(() => {
-			const stored = sessionStorage.getItem("prescribed_medicine");
+			const stored = sessionStorage.getItem("prescribedMedicine");
 		if (stored) {
 			try {
 				const parsed: string[] = JSON.parse(stored);
@@ -34,7 +34,7 @@ const MedicationGrid = () => {
 				setMedicines([]);
 			}
 		}
-		}, [sessionStorage.getItem("prescribed_medicine")]);
+		}, [sessionStorage.getItem("prescribedMedicine")]);
 
 	// Static medicine list
 	// const medicines = [

@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 
 interface SpotlightCardProps {
   children: ReactNode;
-  className?: string;
+  className?: string; 
   spothlightColor?: string;
 }
 

@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 
 const PatientGridContent = () => {
 	var userData = {} as PatientData;	
-	const storedUserData = sessionStorage.getItem("patientData");
+	const storedUserData = sessionStorage.getItem("patient");
 	if (!storedUserData) {
 	  console.error("No patientData found in sessionStorage.");
 	  return;

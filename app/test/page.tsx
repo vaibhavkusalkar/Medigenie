@@ -1,48 +1,107 @@
-import CustomSpotlightCard from '@/components/custom/CustomSpotlightCard'
-import React from 'react'
-import { Brain } from 'lucide-react'
+// Web Speech API setup
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
 
-const TestPage = () => {
-  return (
-    <div 
-        className='flex flex-col items-center justify-center h-screen bg-black'
-        style={{
-            backgroundImage: "url('/assets/images/background.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            position: 'relative',
-        }}
-    >
-        <CustomSpotlightCard className="col-span-2 row-span-2 group">
-  <div className="flex flex-col h-full">
-    <div className="mb-6">
-      <Brain className="w-12 h-12 text-blue-400 animate-pulse" />
-    </div>
-    <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-glow">
-      AI-Powered Disease Prediction
-    </h3>
-    <p className="text-gray-300 mb-6">
-      Harness the power of advanced AI algorithms to predict potential diseases and provide early interventions, improving patient outcomes.
-    </p>
-    <div className="mt-auto">
-      <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-    </div>
-  </div>
-</CustomSpotlightCard>
+// Configuration for long conversations
+recognition.lang = 'en-US';
+recognition.interimResults = true;  // Show interim results
+recognition.continuous = true;      // Enable continuous recognition
+recognition.maxAlternatives = 1;
 
-    </div>
-  )
+const startButton = document.getElementById('start-record');
+const saveButton = document.getElementById('save-text');
+const transcriptArea = document.getElementById('transcript');
+
+let recognizedText = "";
+
+// Handle speech start/end events
+recognition.onspeechstart = () => {
+    console.log('Speech started');
+};
+
+recognition.onspeechend = () => {
+    console.log('Speech ended');
+};
+
+// Start speech recognition when the user clicks the button
+startButton.addEventListener('click', () => {
+    recognition.start();
+    transcriptArea.value = "Listening...";
+    startButton.innerHTML = "Listening...";
+});
+
+// Handle recognition results
+recognition.onresult = (event) => {
+    let interimTranscript = '';
+    let finalTranscript = '';
+
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+        } else {
+            interimTranscript += event.results[i][0].transcript;
+        }
+    }
+
+    recognizedText = finalTranscript || interimTranscript;
+    transcriptArea.value = recognizedText;
+    saveButton.style.display = "inline-block";
+};
+
+// Error handling
+recognition.onerror = (event) => {
+    if (event.error !== 'no-speech') {
+        alert("Error occurred in recognition: " + event.error);
+    }
+    startButton.innerHTML = "Start Recording";
+};
+
+// Handle when recognition ends
+recognition.onend = () => {
+    if (recognizedText) {
+        saveButton.style.display = "inline-block";
+    }
+    startButton.innerHTML = "Start Recording";
+};
+
+// Save recognized text as a text file
+saveButton.addEventListener('click', () => {
+    const blob = new Blob([recognizedText], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = "recognized-speech.txt";
+    link.click();
+});
+
+// Sample patient data
+const patients = {
+    "patient1": userData
+};
+
+// Function to show patient details in the modal
+function showPatientDetails(patientId) {
+    const patient = patients[patientId];
+
+    // Populate modal content with patient details
+    const patientDetails = `
+        <h3>Patient Details:</h3>
+        <p><strong>Name:</strong> ${patient.name}</p>
+        <p><strong>Age:</strong> ${patient.age} years</p>
+        <p><strong>Gender:</strong> ${patient.gender}</p>
+        <p><strong>Blood Type:</strong> ${patient.bloodType || 'N/A'}</p>
+        <p><strong>Medical History:</strong> ${patient.history || 'N/A'}</p>
+        <p><strong>Current Conditions:</strong> ${patient.conditions || 'N/A'}</p>
+    `;
+
+    document.getElementById('patient-details').innerHTML = patientDetails;
+
+    // Show the modal and add the blur effect to the background content (excluding modal)
+    document.getElementById('patient-modal').style.display = "block";
+    document.getElementById('main-content').classList.add("blur-background");
 }
 
-export default TestPage
-
-/*
-<Image
-			src="/assets/images/background.png"
-			layout="fill"
-			objectFit="cover"
-			alt="MediGenie Interface"
-			priority
-			className="transition-all duration-300"
-		/>
-*/
+// Function to close the modal
+function closeModal() {
+    document.getElementById('patient-modal').style.display = "none";
+    document.getElementById('main-content').classList.remove("blur-background");
+}

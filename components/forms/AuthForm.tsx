@@ -24,6 +24,8 @@ import { State, City, Gender } from "@/lib/types";
 import { format } from "date-fns";
 import axios from "axios";
 import { LoginResponse, RegisterResponse } from "@/types/api";
+import { on } from "events";
+import { useRouter } from "next/navigation"
 
 interface AuthFormProps {
 	type: "login" | "register";
@@ -42,6 +44,7 @@ const AuthForm = ({
 	handleStateChange,
 	loadingCities,
 }: AuthFormProps) => {
+	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [isLoading, setisLoading] = useState(false);
 	//const [storedValues, setStoredValues] = useState({ email: '', password: '' });
@@ -80,8 +83,58 @@ const AuthForm = ({
 	};
 
 		const onFormSubmit = async (values: z.infer<typeof formSchema>) => {
-			alert("Submitted!");
-			console.log("onFormSubmit called", values);
+			//alert("Submitted!");
+			console.log("onFormSubmit called", values.email);
+			try {
+				setisLoading(true);
+		
+				let endpoint: string;
+				let payload: any;
+		
+				if (type === "register") {
+					// Register
+					endpoint = "/create";
+					payload = {
+						email: values.email,
+						password: values.password,
+						name: `${values.firstName} ${values.lastName ?? ""}`.trim(),
+						phone_number: values.phoneNumber,
+						aadhaar_number: values.aadhaarNumber,
+						dob: values.dateOfBirth,
+						gender: values.gender,
+						chronic_diseases: values.chronicDiseases
+							? values.chronicDiseases.split(",").map((d: string) => d.trim())
+							: [],
+					};
+				} else {
+					// Login
+					endpoint = "/login";
+					payload = {
+						email: values.email,
+						password: values.password,
+					};
+				}
+		
+				const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}${endpoint}`;
+				console.log("API URL:", apiUrl);
+				console.log("Payload:", payload);
+				const response = await axios.post<RegisterResponse | LoginResponse>(apiUrl, payload);
+				response.data.code !== "200" && alert(response.data.message);
+				if ('doctor_id' in response.data && response.data.doctor_id) {
+				  sessionStorage.setItem("doctorId", response.data.doctor_id);
+				}
+				if ('user_id' in response.data && response.data.user_id) {
+				  sessionStorage.setItem("doctorUserId", response.data.user_id);
+				}
+				if (type === "login" && "token" in response.data && response.data.token) {
+					sessionStorage.setItem("token", response.data.token);
+				}
+				router.replace("/doctor/organizations");
+			} catch (err) {
+				console.error("onSubmit crashed:", err);
+			} finally {
+				setisLoading(false);
+			}
 		};
 
 	/* 	const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -127,7 +180,11 @@ const AuthForm = ({
 					<div className="grid gap-4">
 						<Form {...form}>
 							<form
-								onSubmit={handleSubmit(onFormSubmit)}
+								onSubmit={(e) => {
+									e.preventDefault();
+									const values = form.getValues();
+									onFormSubmit(values);
+								}}
 								className="space-y-5"
 							>
 								{type === "register" && step === 2 && (

@@ -19,6 +19,7 @@ export interface PatientData {
   phone_number: string;
   dob: string;
   email: string;
+  user_id: string;
 }
 
 // Response type for /get-patient-data
@@ -27,7 +28,6 @@ export interface GetPatientDataResponse {
   message: string;
   patient: PatientData;
 }
-
 
 export interface TopDiseases {
     name: string;
@@ -38,7 +38,7 @@ export interface GetAnalyzeResponse {
     code: string;
     message: string;
     prescribed_medicine: string[];
-    top_5_diseases: TopDiseases[];
+    top_5_disease: TopDiseases[];
     transcript_summary: string;
 }
 
@@ -53,4 +53,11 @@ export interface LoginResponse {
   message: string;
   token?: string;
   user_id: string;
+  doctor_id: string;
+}
+
+export interface CreateConsultationResponse {
+  code: string;
+  message: string;
+  record_id: string;
 }

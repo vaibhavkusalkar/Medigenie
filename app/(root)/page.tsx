@@ -80,10 +80,10 @@ const Home = () => {
           </div>
     
           <div className="flex items-center space-x-2">
-            <Button onClick={()=>router.replace("register")} variant="ghost" className="rounded-full text-gray-300 hover:text-white hover:secondary-button-innerglow transition-all">
+            <Button onClick={()=>router.replace("/register")} variant="ghost" className="rounded-full text-gray-300 hover:text-white hover:secondary-button-innerglow transition-all">
               Register
             </Button>
-            <Button onClick={()=>router.replace("login")} className="backdrop-blur-sm bg-white/2 border border-white/30 shadow-lg shadow-purple-500/10 rounded-2xl px-6 hover:bg-transperent text-white primary-button-innerglow transition-all">
+            <Button onClick={()=>router.replace("/login")} className="backdrop-blur-sm bg-white/2 border border-white/30 shadow-lg shadow-purple-500/10 rounded-2xl px-6 hover:bg-transperent text-white primary-button-innerglow transition-all">
               Login
             </Button>
           </div>

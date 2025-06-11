@@ -14,7 +14,7 @@ const OrganizationsPage = () => {
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
-        const userId = sessionStorage.getItem("doctorId");
+        const userId = sessionStorage.getItem("doctorUserId");
         if (!userId) {
           console.error("No doctorId found in sessionStorage.");
           return;
@@ -28,8 +28,14 @@ const OrganizationsPage = () => {
             },
           }
         );
-        setOrganizations(response.data.organization);
-        console.log("Fetched organizations:", response.data.organization);
+        if (response.data.organization) {
+          setOrganizations(response.data.organization);
+          console.log("Fetched organizations:", response.data.organization);
+        } else {
+          console.error("No organizations found in the response.");
+          setOrganizations([]);
+        }
+        
       } catch (error) {
         console.error("Failed to fetch organizations:", error);
       }
@@ -62,32 +68,39 @@ const OrganizationsPage = () => {
     }
 
     sessionStorage.setItem("organization", JSON.stringify(organization))
+    sessionStorage.setItem("orgId", orgId)
     console.log(`Organization stored in session storage:`, organization)
     router.replace("home")  
   }
 
-  return (
+    return (
     <div className="min-h-screen bg-background p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-white">Select Your Organization</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {organizations.map((org) => (
-          <Card key={org.organization_id} className="border-1 hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-center">{org.organization_name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                className="w-full bg-gray-800"
-                onClick={() => handleSelectOrganization(org.organization_id, org.organization_name)}
-              >
-                Select
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {organizations.length === 0 ? (
+        <div className="text-center text-gray-400 text-lg mt-12">
+          No organizations found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {organizations.map((org) => (
+            <Card key={org.organization_id} className="border-1 hover:shadow-md transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-center">{org.organization_name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  className="w-full bg-gray-800"
+                  onClick={() => handleSelectOrganization(org.organization_id, org.organization_name)}
+                >
+                  Select
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
 export default OrganizationsPage

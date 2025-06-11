@@ -17,9 +17,9 @@ const getCategory = (percentage: number) => {
 
 const DiseaseGridContent = () => {
 	const [diseases, setDiseases] = React.useState<TopDiseases[]>([]);
-	
+	//const top5Diseases = sessionStorage.getItem("top5Diseases");
 	useEffect(() => {
-		const stored = sessionStorage.getItem("top_5_diseases");
+	const stored = sessionStorage.getItem("top5Diseases");
     if (stored) {
         try {
             const parsed: TopDiseases[] = JSON.parse(stored);
@@ -28,7 +28,7 @@ const DiseaseGridContent = () => {
             setDiseases([]);
         }
     }
-	}, [sessionStorage.getItem("top_5_diseases")]);
+	}, [sessionStorage.getItem("top5Diseases")]);
 
 	return (
 		<div className="space-y-3 pt-3">
@@ -37,12 +37,12 @@ const DiseaseGridContent = () => {
 				return (
 					<div
 						key={index}
-						className="flex justify-between items-center border-b pb-2"
+						className="flex justify-between items-center"
 					>
-						<span className="text-white font-medium">{disease.name}</span>
-						<span className={`text-sm font-semibold ${category.color}`}>
+						<span className="text-white font-medium">{index+1}. {disease.name}</span>
+						{/* <span className={`text-sm font-semibold ${category.color}`}>
 							{category.label}
-						</span>
+						</span> */}
 					</div>
 				);
 			})}

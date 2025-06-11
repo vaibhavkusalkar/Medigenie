@@ -100,6 +100,6 @@ const DoctorDashboard = () => {
 			</div>
 		</div>
 	);
-};
+}; 
 
 export default DoctorDashboard;

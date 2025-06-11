@@ -2,10 +2,15 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { GetPatientDataResponse } from "@/types/api";
+import { CreateConsultationResponse, GetPatientDataResponse } from "@/types/api";
 import { headers } from "next/headers";
+import { CardHeader, CardTitle, CardContent } from "@/components/custom/CustomCard";
+import CustomSpotlightCard from "@/components/custom/CustomSpotlightCard";
+import AudioGridContent from "@/components/dashboard/AudioGridContent";
+import { useRouter } from "next/navigation"
 
 const DoctorHome = () => {
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [patient, setPatient] = useState<GetPatientDataResponse["patient"] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +33,6 @@ const DoctorHome = () => {
       const response = await axios.post<GetPatientDataResponse>(apiUrl, {
         user_email: searchInput, // Correctly pass the data here
       });
-  
 
       if (response.data.patient) {
         console.log("Patient found:", response.data.patient);
@@ -66,18 +70,31 @@ const DoctorHome = () => {
 
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-            {patient && (
+      {patient && (
         <div className="mt-6 max-w-md mx-auto bg-gray-800 p-4 rounded shadow">
-          <h2 className="text-xl font-semibold mb-2">Patient Info</h2>
-          <p><strong>Name:</strong> {patient.name}</p>
-          <p><strong>Phone:</strong> {patient.phone_number}</p>
+          <h2 className="text-xl font-semibold mb-2">{patient.name}</h2>
+          <p>{patient.phone_number}</p>
           {/* Add more patient fields as needed */}
           <button
             className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-            onClick={() => {
-              sessionStorage.setItem("patientData", JSON.stringify(patient));
-              alert("Patient selected!");
+            onClick={async () => {
+              sessionStorage.setItem("patient", JSON.stringify(patient));
+              sessionStorage.setItem("patientId", patient.user_id);
               
+              const payload = {
+                patient_id: patient.user_id,
+                doctor_id:sessionStorage.getItem("doctorId"),
+                organization_id:sessionStorage.getItem("orgId")
+              };
+              
+              const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL || ""}/create-consultation`;
+              try {
+                const result = await axios.post<CreateConsultationResponse>(apiUrl, payload);
+                sessionStorage.setItem("consultationId", result.data.record_id);
+              } catch (error) {
+                console.error("Error creating consultation:", error);
+              }
+              router.replace("/doctor/dashboard");
               // You can also navigate or trigger other actions here
             }}
           >
@@ -85,6 +102,7 @@ const DoctorHome = () => {
           </button>
         </div>
       )}
+
     </div>
   );
 };
