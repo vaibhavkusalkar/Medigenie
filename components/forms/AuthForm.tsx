@@ -223,8 +223,8 @@ const AuthForm = ({
 										<CustomAuthFormField
 											formControl={form.control}
 											name="aadhaarNumber"
-											label="Aadhaar Number"
-											placeholder="Enter your Aadhaar Number"
+											label="Aadhar Number"
+											placeholder="Enter your Aadhar Number"
 											id="aadhaarNumber"
 											type="aadhaarNumber"
 											/>

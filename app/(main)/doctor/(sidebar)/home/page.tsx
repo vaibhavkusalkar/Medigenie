@@ -42,7 +42,7 @@ const DoctorHome = () => {
       }
     } catch (err) {
       console.error("Failed to fetch patient:", err);
-      setError("Error fetching patient data.");
+      setError("No patient found.");
     } finally {
       setIsLoading(false);
     }
