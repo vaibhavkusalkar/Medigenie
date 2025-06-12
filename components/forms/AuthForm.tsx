@@ -26,6 +26,7 @@ import axios from "axios";
 import { LoginResponse, RegisterResponse } from "@/types/api";
 import { on } from "events";
 import { useRouter } from "next/navigation"
+import {toast, Toaster} from "sonner";
 
 interface AuthFormProps {
 	type: "login" | "register";
@@ -119,7 +120,7 @@ const AuthForm = ({
 				console.log("API URL:", apiUrl);
 				console.log("Payload:", payload);
 				const response = await axios.post<RegisterResponse | LoginResponse>(apiUrl, payload);
-				response.data.code !== "200" && alert(response.data.message);
+				response.data.code !== "200" && toast.success(response.data.message);
 				if ('doctor_id' in response.data && response.data.doctor_id) {
 				  sessionStorage.setItem("doctorId", response.data.doctor_id);
 				}
@@ -132,6 +133,7 @@ const AuthForm = ({
 				router.replace("/doctor/organizations");
 			} catch (err) {
 				console.error("onSubmit crashed:", err);
+				toast.error("Login failed")
 			} finally {
 				setisLoading(false);
 			}
@@ -155,8 +157,11 @@ const AuthForm = ({
 	//lg:min-h-[600px] xl:min-h-[800px]
 
 	return (
+		<>
+		<Toaster position="top-center" richColors duration={1000}/>
 		<div className="w-full h-screen flex flex-col lg:grid lg:grid-cols-2 px-6 lg:px-0 overflow-hidden">
 			<div className="hidden lg:flex items-center justify-center bg-gray-950">
+				
 				{/* Add any additional content for the second column here */}
 				<Image
 					src='/assets/images/illustration.svg'
@@ -186,7 +191,7 @@ const AuthForm = ({
 									onFormSubmit(values);
 								}}
 								className="space-y-5"
-							>
+								>
 								{type === "register" && step === 2 && (
 									<div className="grid gap-4">
 										<div className="flex gap-4">
@@ -197,7 +202,7 @@ const AuthForm = ({
 												placeholder=""
 												id="firstName"
 												type="firstName"
-											/>
+												/>
 											<CustomAuthFormField
 												formControl={form.control}
 												name="lastName"
@@ -205,7 +210,7 @@ const AuthForm = ({
 												placeholder=""
 												id="lastName"
 												type="lastName"
-											/>
+												/>
 										</div>
 										<CustomAuthFormField
 											formControl={form.control}
@@ -214,7 +219,7 @@ const AuthForm = ({
 											placeholder="Enter your Phone Number"
 											id="phoneNumber"
 											type="phoneNumber"
-										/>
+											/>
 										<CustomAuthFormField
 											formControl={form.control}
 											name="aadhaarNumber"
@@ -222,7 +227,7 @@ const AuthForm = ({
 											placeholder="Enter your Aadhaar Number"
 											id="aadhaarNumber"
 											type="aadhaarNumber"
-										/>
+											/>
 										<div className="flex gap-4">
 											<CustomAuthFormField
 												formControl={form.control}
@@ -231,7 +236,7 @@ const AuthForm = ({
 												placeholder=""
 												id="dateOfBirth"
 												type="calender"
-											/>
+												/>
 											<CustomAuthFormField
 												formControl={form.control}
 												name="gender"
@@ -240,7 +245,7 @@ const AuthForm = ({
 												id="gender"
 												type="dropdown"
 												options={gender}
-											/>
+												/>
 										</div>
 										<CustomAuthFormField
 											formControl={form.control}
@@ -249,7 +254,7 @@ const AuthForm = ({
 											placeholder="Enter your chronic diseases (if any)"
 											id="chronicDiseases"
 											type="chronicDiseases"
-										/>
+											/>
 									</div>
 								)}
 								{step === 1 && (
@@ -261,7 +266,7 @@ const AuthForm = ({
 											placeholder="Enter your Email"
 											id="email"
 											type="email"
-										/>
+											/>
 
 										<CustomAuthFormField
 											formControl={form.control}
@@ -273,7 +278,7 @@ const AuthForm = ({
 											{...(type === "login" && {
 												showForgotPassword: true,
 											})}
-										/>
+											/>
 										{type === "register" && (
 											<div className="pb-1">
 												<CustomAuthFormField
@@ -283,24 +288,24 @@ const AuthForm = ({
 													placeholder="Enter your Password Again"
 													id="confirmPassword"
 													type="password"
-												/>
+													/>
 											</div>
 										)}
 									</>
 								)}
 								{((type === "register" && step === 2) ||
 									type === "login") && (
-									<Button
+										<Button
 										type="submit"
 										// disabled={isLoading}
 										className="w-full"
-									>
+										>
 										{isLoading ? (
 											<>
 												<Loader2
 													size={20}
 													className="animate-spin"
-												/>{" "}
+													/>{" "}
 												&nbsp; Loading...
 											</>
 										) : type === "login" ? (
@@ -314,8 +319,8 @@ const AuthForm = ({
 						</Form>
 						{type === "register" && step === 1 && (
 							<Button
-								onClick={handleNextClick}
-								className="w-full"
+							onClick={handleNextClick}
+							className="w-full"
 							>
 								Next
 							</Button>
@@ -333,13 +338,14 @@ const AuthForm = ({
 						<Link
 							href={type === "register" ? "/login" : "/register"}
 							className="underline"
-						>
+							>
 							{type === "register" ? "Sign in" : "Sign up"}
 						</Link>
 					</div>
 				</div>
 			</div>
 		</div>
+		</>
 	);
 };
 
